@@ -1,0 +1,35 @@
+#pragma once
+
+#include <string>
+#include <regex>
+
+namespace utils {
+
+// TODO: unit test, refactor
+std::vector<std::string> split_by_delimiter(std::string to_split, const std::string& delimiter) {
+    std::vector<std::string> tokens{};
+    size_t delimiter_position{0};
+    while((delimiter_position = to_split.find(delimiter)) != std::string::npos) {
+        std::string token = to_split.substr(0, delimiter_position);
+        to_split.erase(0, delimiter_position + delimiter.length());
+        tokens.push_back(token);
+    }
+    if(!to_split.empty()) {
+        tokens.push_back(to_split);
+    }
+    return tokens;
+}
+
+std::string left_trim(const std::string& to_trim) {
+    return std::regex_replace(to_trim, std::regex("^\\s+"), std::string(""));
+}
+
+std::string right_trim(const std::string& to_trim) {
+    return std::regex_replace(to_trim, std::regex("\\s+$"), std::string(""));
+}
+
+std::string trim(const std::string& to_trim) {
+    return left_trim(right_trim(to_trim));
+}
+
+}
