@@ -17,19 +17,19 @@ std::vector<int> read_puzzle_input(const std::string& file_name) {
     return puzzle_input;
 }
 
-int increase_offset_by_one(int offset) {
+inline int increase_offset_by_one(int offset) {
     return offset + 1;
 }
 
-int increase_of_decrease_offset_by_one(int offset) {
+inline int increase_of_decrease_offset_by_one(int offset) {
     return offset < 3 ? offset + 1 : offset - 1;
 }
 
 unsigned count_number_of_steps_to_reach_exit(const std::vector<int>& initial_state, const OffsetUpdatePolicy& calculate_new_offset_value) {
-    unsigned position{0};
+    int position{0};
     unsigned step_number{0};
     std::vector<int> offsets = initial_state;
-    while(position < offsets.size()) {
+    while(position < offsets.size() && position >= 0) {
         int current_offset = offsets.at(position);
         offsets.at(position) = calculate_new_offset_value(current_offset);
         position += current_offset;
