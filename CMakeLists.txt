@@ -3,6 +3,6 @@ project(Advent_Of_Code_2017)
 
 add_subdirectory(solutions/day01)
 add_subdirectory(solutions/day02)
-#add_subdirectory(solutions/day03)
+add_subdirectory(solutions/day03)
 add_subdirectory(solutions/day04)
 add_subdirectory(solutions/day05)

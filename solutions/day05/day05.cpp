@@ -21,7 +21,7 @@ inline int increase_offset_by_one(int offset) {
     return offset + 1;
 }
 
-inline int increase_of_decrease_offset_by_one(int offset) {
+inline int increase_or_decrease_offset_by_one(int offset) {
     return offset < 3 ? offset + 1 : offset - 1;
 }
 
@@ -29,7 +29,7 @@ unsigned count_number_of_steps_to_reach_exit(const std::vector<int>& initial_sta
     int position{0};
     unsigned step_number{0};
     std::vector<int> offsets = initial_state;
-    while(position < offsets.size() && position >= 0) {
+    while(position < static_cast<int>(offsets.size()) && position >= 0) {
         int current_offset = offsets.at(position);
         offsets.at(position) = calculate_new_offset_value(current_offset);
         position += current_offset;
@@ -41,6 +41,6 @@ unsigned count_number_of_steps_to_reach_exit(const std::vector<int>& initial_sta
 int main() {
     const auto puzzle_input = read_puzzle_input("input.txt");
     std::cout << "Part 1: " << count_number_of_steps_to_reach_exit(puzzle_input, increase_offset_by_one) << std::endl;
-    std::cout << "Part 2: " << count_number_of_steps_to_reach_exit(puzzle_input, increase_of_decrease_offset_by_one) << std::endl;
+    std::cout << "Part 2: " << count_number_of_steps_to_reach_exit(puzzle_input, increase_or_decrease_offset_by_one) << std::endl;
     return 0;
 }
