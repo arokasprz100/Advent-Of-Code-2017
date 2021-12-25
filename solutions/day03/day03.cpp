@@ -39,12 +39,12 @@ std::vector<Point> get_neighbours(const Point& position) {
 }
 
 template<typename NewValueCalculationPolicy>
-int move_until_value_reached_or_exceeded(Point& position, int desired_value, const NewValueCalculationPolicy& calculate_new_value) {
-    std::array<Point, 4> direction_vectors = {{ {1, 0}, {0, 1}, {-1, 0}, {0, -1} }};
+std::pair<Point, int> move_until_value_reached_or_exceeded(Point position, int desired_value, const NewValueCalculationPolicy& calculate_new_value) {
+    static const std::array<Point, 4> direction_vectors = {{ {1, 0}, {0, 1}, {-1, 0}, {0, -1} }};
     auto[current_value, step_size, remaining_step, direction] = std::tuple{1, 1, 1, 0};
     while(current_value < desired_value) {
         position = move_point_by_vector(position, direction_vectors.at(direction));
-        current_value = calculate_new_value(current_value);
+        current_value = calculate_new_value(current_value, position);
         --remaining_step;
         if(remaining_step == 0) {
             direction = (direction + 1) % 4;
@@ -54,27 +54,29 @@ int move_until_value_reached_or_exceeded(Point& position, int desired_value, con
             remaining_step = step_size;
         }
     }
-    return current_value;
+    return { position, current_value };
 }
 
 unsigned solve_part_one(int puzzle_input) {
-    Point position{0, 0};
-    move_until_value_reached_or_exceeded(position, puzzle_input, [](int value) { return value + 1; });
+    const auto next_value_calculator =  [](int value, const Point&) {
+        return value + 1;
+    };
+    const auto[position, value] = move_until_value_reached_or_exceeded({0, 0}, puzzle_input, next_value_calculator);
     return manhattan_distance({0, 0}, position);
 }
 
 unsigned solve_part_two(int puzzle_input) {
-    Point position{0, 0};
-    std::map<Point, int> previous_values{ {position, 1} };
-    const auto next_value_calculator = [&position, &previous_values](unsigned) {
-        const auto neighbours = get_neighbours(position);
-        int value = std::accumulate(std::begin(neighbours), std::end(neighbours), 0, [&previous_values](int sum, const auto& entry) {
+    std::map<Point, int> previous_values{ {{0, 0}, 1} };
+    const auto next_value_calculator = [&previous_values](int, const Point& position) {
+        const auto previous_values_accumulator = [&previous_values](int sum, const auto& entry) {
             return sum + previous_values[entry];
-        });
-        previous_values[position] = value;
-        return value;
+        };
+        const auto neighbours = get_neighbours(position);
+        previous_values[position] = std::accumulate(std::begin(neighbours), std::end(neighbours), 0, previous_values_accumulator);
+        return previous_values[position];
     };
-    return move_until_value_reached_or_exceeded(position, puzzle_input, next_value_calculator);
+    const auto[position, value] = move_until_value_reached_or_exceeded({0, 0}, puzzle_input, next_value_calculator);
+    return value;
 }
 
 int main() {
