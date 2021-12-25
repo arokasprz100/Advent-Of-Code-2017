@@ -31,7 +31,7 @@ public:
 
     int run_instructions_and_get_max_total_value(const std::vector<CPUInstruction>& instructions) {
         registers.clear();
-        int max_value = 0;
+        int max_value = std::numeric_limits<int>::min();
         for(const auto& instruction: instructions) {
             run_instruction(instruction);
             max_value = std::max(max_value, registers[instruction.destination_register]);

@@ -8,3 +8,4 @@ add_subdirectory(solutions/day04)
 add_subdirectory(solutions/day05)
 
 add_subdirectory(solutions/day08)
+add_subdirectory(solutions/day11)
