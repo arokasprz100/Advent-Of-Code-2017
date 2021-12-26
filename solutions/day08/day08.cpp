@@ -18,25 +18,35 @@ public:
     using RegisterModifyingOperation = std::function<void(int&, int)>;
     using ComparisonOperation = std::function<bool(int, int)>;
 
-    int run_instructions_and_get_max_final_value(const std::vector<CPUInstruction>& instructions) {
-        const auto registers_values_comparator = [](const auto& lhs, const auto& rhs) {
-            return lhs.second < rhs.second;
-        };
-        registers.clear();
+    void run(const std::vector<CPUInstruction>& instructions) {
         for(const auto& instruction: instructions) {
-            run_instruction(instruction);
+            run(instruction);
         }
-        return std::max_element(std::begin(registers), std::end(registers), registers_values_comparator)->second;
     }
 
-    int run_instructions_and_get_max_total_value(const std::vector<CPUInstruction>& instructions) {
-        registers.clear();
-        int max_value = std::numeric_limits<int>::min();
-        for(const auto& instruction: instructions) {
-            run_instruction(instruction);
-            max_value = std::max(max_value, registers[instruction.destination_register]);
+    bool run(const CPUInstruction& instruction) {
+        const auto modification = register_modifying_operations_by_mnemonics.at(instruction.modifying_operation_mnemonic);
+        const auto comparison = comparison_operations_by_mnemonic.at(instruction.comparison_operation_mnemonic);
+        if(comparison(registers[instruction.comparison_register], instruction.comparison_operation_argument)) {
+            modification(registers[instruction.destination_register], instruction.modifying_operation_argument);
+            return true;
         }
-        return max_value;
+        return false;
+    }
+
+    [[nodiscard]]
+    int register_value(const std::string& register_name) const {
+        return registers.at(register_name);
+    }
+
+    [[nodiscard]]
+    std::map<std::string, int>::const_iterator begin() const {
+        return registers.cbegin();
+    }
+
+    [[nodiscard]]
+    std::map<std::string, int>::const_iterator end() const {
+        return registers.cend();
     }
 
 private:
@@ -56,13 +66,6 @@ private:
         { "!=", [](int lhs, int rhs) { return lhs != rhs; } }
     };
 
-    void run_instruction(const CPUInstruction& instruction) {
-        const auto modification = register_modifying_operations_by_mnemonics.at(instruction.modifying_operation_mnemonic);
-        const auto comparison = comparison_operations_by_mnemonic.at(instruction.comparison_operation_mnemonic);
-        if(comparison(registers[instruction.comparison_register], instruction.comparison_operation_argument)) {
-            modification(registers[instruction.destination_register], instruction.modifying_operation_argument);
-        }
-    }
 };
 
 std::vector<CPUInstruction> read_puzzle_input(const std::string& file_name) {
@@ -80,9 +83,30 @@ std::vector<CPUInstruction> read_puzzle_input(const std::string& file_name) {
     return instructions;
 }
 
+int solve_part_one(const std::vector<CPUInstruction>& instructions) {
+    const auto registers_values_comparator = [](const auto& lhs, const auto& rhs) {
+        return lhs.second < rhs.second;
+    };
+    CPU cpu{};
+    cpu.run(instructions);
+    return std::max_element(std::begin(cpu), std::end(cpu), registers_values_comparator)->second;
+}
+
+int solve_part_two(const std::vector<CPUInstruction>& instructions) {
+    CPU cpu{};
+    int max_value = std::numeric_limits<int>::min();
+    for(const auto& instruction: instructions) {
+        bool instruction_executed = cpu.run(instruction);
+        if(instruction_executed) {
+            max_value = std::max(max_value, cpu.register_value(instruction.destination_register));
+        }
+    }
+    return max_value;
+}
+
 int main() {
     const auto puzzle_input = read_puzzle_input("input.txt");
-    std::cout << "Part 1: " << CPU{}.run_instructions_and_get_max_final_value(puzzle_input) << std::endl;
-    std::cout << "Part 2: " << CPU{}.run_instructions_and_get_max_total_value(puzzle_input) << std::endl;
+    std::cout << "Part 1: " << solve_part_one(puzzle_input) << std::endl;
+    std::cout << "Part 2: " << solve_part_two(puzzle_input) << std::endl;
     return 0;
 }

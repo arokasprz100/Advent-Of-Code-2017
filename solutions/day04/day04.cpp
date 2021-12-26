@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
-
+#include <functional>
 #include <Utils.h>
 
 using Passphrase = std::vector<std::string>;

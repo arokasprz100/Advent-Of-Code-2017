@@ -11,11 +11,11 @@ My solutions to the Advent of Code 2017 exercises created using C++.
 |  04 | High-Entropy Passphrases                    | [link](https://adventofcode.com/2017/day/4)   | [link](solutions/day04) |
 |  05 | A Maze of Twisty Trampolines, All Alike     | [link](https://adventofcode.com/2017/day/5)   | [link](solutions/day05) |
 |  06 | Memory Reallocation                         | [link](https://adventofcode.com/2017/day/6)   |                         |
-|  07 | Recursive Circus                            | [link](https://adventofcode.com/2017/day/7)   |                         |
-|  08 | I Heard You Like Registers                  | [link](https://adventofcode.com/2017/day/8)   |                         |
+|  07 | Recursive Circus                            | [link](https://adventofcode.com/2017/day/7)   | [link](solutions/day07) |
+|  08 | I Heard You Like Registers                  | [link](https://adventofcode.com/2017/day/8)   | [link](solutions/day08) |
 |  09 | Stream Processing                           | [link](https://adventofcode.com/2017/day/9)   |                         |
 |  10 | Knot Hash                                   | [link](https://adventofcode.com/2017/day/10)  |                         |
-|  11 | Hex Ed                                      | [link](https://adventofcode.com/2017/day/11)  |                         |
+|  11 | Hex Ed                                      | [link](https://adventofcode.com/2017/day/11)  | [link](solutions/day11) |
 |  12 | Digital Plumber                             | [link](https://adventofcode.com/2017/day/12)  |                         |
 |  13 | Packet Scanners                             | [link](https://adventofcode.com/2017/day/13)  |                         |
 |  14 | Disk Defragmentation                        | [link](https://adventofcode.com/2017/day/14)  |                         |

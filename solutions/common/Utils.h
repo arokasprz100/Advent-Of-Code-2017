@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <regex>
+#include <vector>
 
 namespace utils {
 
@@ -20,12 +20,20 @@ std::vector<std::string> split_by_delimiter(std::string to_split, const std::str
     return tokens;
 }
 
-std::string left_trim(const std::string& to_trim) {
-    return std::regex_replace(to_trim, std::regex("^\\s+"), std::string(""));
+bool is_not_whitespace(const char character) {
+    return !std::isspace<char>(character, std::locale::classic());
 }
 
-std::string right_trim(const std::string& to_trim) {
-    return std::regex_replace(to_trim, std::regex("\\s+$"), std::string(""));
+std::string left_trim(std::string to_trim) {
+    auto it = std::find_if(std::begin(to_trim), std::end(to_trim), is_not_whitespace);
+    to_trim.erase(std::begin(to_trim), it);
+    return to_trim;
+}
+
+std::string right_trim(std::string to_trim) {
+    auto it = std::find_if(std::rbegin(to_trim), std::rend(to_trim), is_not_whitespace);
+    to_trim.erase(it.base(), std::end(to_trim));
+    return to_trim;
 }
 
 std::string trim(const std::string& to_trim) {
