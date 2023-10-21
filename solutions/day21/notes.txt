@@ -1,0 +1,50 @@
+original:
+1 2 3
+4 5 6
+7 8 9
+
+flip up:
+7 8 9
+4 5 6
+1 2 3
+
+flip right:
+3 2 1
+6 5 4
+9 8 7
+
+rotate 90:
+3 6 9
+2 5 8
+1 4 7
+
+rotate 180:
+9 8 7
+6 5 4
+3 2 1
+
+rotate 270:
+7 4 1
+8 5 2
+9 6 3
+
+flip up + rotate 90:
+9 6 3
+8 5 2
+7 4 1
+
+flip up + rotate 270:
+1 4 7
+2 5 8
+3 6 9
+
+flip up + rotate 180 (duplicate of flip right)
+
+flip right + flip up (duplicate of rotate 180)
+flip right + rotate 90 (duplicate of flip up + rotate 270)
+flip right + rotate 270 (duplicate of flip up + rotate 90)
+
+rotate 90 + flip up (duplicate of flip up + rotate 270)
+rotate 90 + flip right (duplicate of flip up + rotate 90)
+rotate 180 + flip up (duplicate of flip right)
+rotate 180 + flip right (duplicate of flip up):

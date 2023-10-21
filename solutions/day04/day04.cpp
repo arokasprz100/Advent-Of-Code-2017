@@ -3,7 +3,7 @@
 #include <vector>
 #include <set>
 #include <functional>
-#include <Utils.h>
+#include <common.h>
 
 using Passphrase = std::vector<std::string>;
 using SecurityPolicy = std::function<bool(const Passphrase&)>;
