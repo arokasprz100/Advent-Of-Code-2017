@@ -13,7 +13,7 @@ function(build_solution_for_given_day)
         message(FATAL_ERROR "Day number not given")
     endif()
 
-    set(CMAKE_CXX_STANDARD 23)
+    set(CMAKE_CXX_STANDARD 20)
     add_executable(Day${PARSED_ARGS_DAY_NUMBER} ${CMAKE_CURRENT_SOURCE_DIR}/day${PARSED_ARGS_DAY_NUMBER}.cpp)
     target_include_directories(Day${PARSED_ARGS_DAY_NUMBER} PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/../common"
